@@ -17,7 +17,7 @@ export class HomePage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams, public alertCtrl: AlertController,
     public storage: Storage) {
-      this.storage.keys()
+      /*this.storage.keys()
       .then(keys=> {
         if (keys.some(key => key == 'usuarios2')){
           this.storage.get('usuarios2')
@@ -25,7 +25,7 @@ export class HomePage {
             this.usuarios = JSON.parse(usuarios);
           });
         }
-      });
+      });*/
       console.log(this.navParams.get('email'));
       this.usuarios.push(
         {
@@ -33,25 +33,31 @@ export class HomePage {
           pass: this.navParams.get('pass')
         }
       );
+      
       this.storage.set('usuarios2', JSON.stringify(this.usuarios));
       this.storage.keys()
       .then(keys=> {
         if (keys.some(key => key == 'usuarios2')){
+          console.log ("yes");
           this.storage.get('usuarios2')
           .then(usuarios => {
             this.usuarios = JSON.parse(usuarios);
           });
         }
       });
+      console.log(this.usuarios[0].email+" "+this.usuarios[0].pass);
   }
   registerUser(){
     this.navCtrl.push(this.register);
   }
 
   login(){
-    let index=this.usuarios.findIndex(usuario=>usuario.email==this.temp.email);
+    console.log(this.temp.email);
+    console.log(this.temp.pass);
+    let index=this.usuarios.findIndex(usuario=>usuario.email==this.temp.email
+      && usuario.pass==this.temp.pass);
     console.log(index);
-    if (index>0){
+    if (index>=0){
       const alert = this.alertCtrl.create({
         title: 'Éxito',
         subTitle: 'Inicio de sesión con éxito',
